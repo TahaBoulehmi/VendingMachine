@@ -21,6 +21,10 @@ module.exports = {
       required: true,
       isNotEmptyString: true,
     },
+    products: {
+      collection: 'product',
+      via: 'seller',
+    },
 
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
