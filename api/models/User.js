@@ -21,6 +21,16 @@ module.exports = {
       required: true,
       isNotEmptyString: true,
     },
+    deposit: {
+      type: 'number',
+      defaultTo: 0,
+      min: 0,
+    },
+    role: {
+      type: 'number',
+      isIn: [0, 1], //0: buyer, 1: seller
+      defaultsTo: 0,
+    },
     products: {
       collection: 'product',
       via: 'seller',
@@ -39,7 +49,7 @@ module.exports = {
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
   },
   beforeCreate: function (values, proceed) {
-    values.username ? (values.username = sails.helpers.format.with({ usernam: values.username })) : null
+    values.username ? (values.username = sails.helpers.format.with({ username: values.username })) : null
     if (values.password) {
       Passwords.encryptPassword({
         password: values.password,
@@ -59,7 +69,7 @@ module.exports = {
   },
 
   beforeUpdate: function (values, proceed) {
-    values.username ? (values.username = sails.helpers.format.with({ usernam: values.username })) : null
+    values.username ? (values.username = sails.helpers.format.with({ username: values.username })) : null
     if (values.password) {
       Passwords.encryptPassword({
         password: values.password,
