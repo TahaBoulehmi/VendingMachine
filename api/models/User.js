@@ -23,7 +23,7 @@ module.exports = {
     },
     deposit: {
       type: 'number',
-      defaultTo: 0,
+      defaultsTo: 0,
       min: 0,
     },
     role: {

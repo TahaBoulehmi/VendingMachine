@@ -8,7 +8,7 @@ module.exports = {
   inputs: {
     deposit: {
       type: 'number',
-      example: '5',
+      example: 5,
       description: 'Accepts only 5, 10, 20, 50, 100',
     },
   },
