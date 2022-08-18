@@ -13,6 +13,7 @@ import { SearchIcon } from '@heroicons/react/solid'
 import Products from '../components/Products'
 import Withdraw from '../components/Withdraw'
 import Deposit from '../components/Deposit'
+import ProductForm from '../components/ProductForm'
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -32,7 +33,8 @@ function classNames(...classes) {
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [openWithdraw, setOpenWithdraw] = useState(false)
-  const [openDeposit, setOpenDeposit] = useState(true)
+  const [openDeposit, setOpenDeposit] = useState(false)
+  const [openProductForm, setOpenProductForm] = useState(true)
   return (
     <>
       <div>
@@ -259,6 +261,7 @@ export default function Dashboard() {
       </div>
       <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} />
       <Deposit open={openDeposit} setOpen={setOpenDeposit} />
+      <ProductForm open={openProductForm} setOpen={setOpenProductForm} />
     </>
   )
 }
