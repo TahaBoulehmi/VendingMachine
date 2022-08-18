@@ -10,7 +10,9 @@ import {
   UploadIcon,
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
-import Products from '../components/products'
+import Products from '../components/Products'
+import Withdraw from '../components/Withdraw'
+import Deposit from '../components/Deposit'
 
 const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
@@ -27,9 +29,10 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
+export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-
+  const [openWithdraw, setOpenWithdraw] = useState(false)
+  const [openDeposit, setOpenDeposit] = useState(true)
   return (
     <>
       <div>
@@ -254,6 +257,8 @@ export default function Example() {
           </main>
         </div>
       </div>
+      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} />
+      <Deposit open={openDeposit} setOpen={setOpenDeposit} />
     </>
   )
 }
