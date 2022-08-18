@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
 import Products from '../components/Products'
-import Withdraw from '../components/Withdraw'
+import Reset from '../components/Reset'
 import Deposit from '../components/Deposit'
 import ProductForm from '../components/ProductForm'
 
@@ -19,7 +19,7 @@ const navigation = [
   { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
   { name: 'Add Product', href: '#', icon: DocumentAddIcon, current: false, role: 1 },
   { name: 'Deposit', href: '#', icon: UploadIcon, current: false, role: 0 },
-  { name: 'Withdraw', href: '#', icon: CashIcon, current: false, role: 0 },
+  { name: 'Reset', href: '#', icon: CashIcon, current: false, role: 0 },
 ]
 const userNavigation = [
   { name: 'Your Profile', href: '#' },
@@ -32,9 +32,9 @@ function classNames(...classes) {
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [openWithdraw, setOpenWithdraw] = useState(false)
+  const [openReset, setOpenReset] = useState(false)
   const [openDeposit, setOpenDeposit] = useState(false)
-  const [openProductForm, setOpenProductForm] = useState(true)
+  const [openProductForm, setOpenProductForm] = useState(false)
   return (
     <>
       <div>
@@ -259,7 +259,7 @@ export default function Dashboard() {
           </main>
         </div>
       </div>
-      <Withdraw open={openWithdraw} setOpen={setOpenWithdraw} />
+      <Reset open={openReset} setOpen={setOpenReset} />
       <Deposit open={openDeposit} setOpen={setOpenDeposit} />
       <ProductForm open={openProductForm} setOpen={setOpenProductForm} />
     </>
