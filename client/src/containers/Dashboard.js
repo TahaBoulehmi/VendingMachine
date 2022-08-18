@@ -31,6 +31,7 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
+  const [search, setSearch] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [openReset, setOpenReset] = useState(false)
   const [openDeposit, setOpenDeposit] = useState(false)
@@ -86,8 +87,8 @@ export default function Dashboard() {
                   <div className="flex-shrink-0 flex items-center px-4">
                     <img
                       className="h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"
-                      alt="Workflow"
+                      src="https://tailwindui.com/img/logos/Vending Machine-mark.svg?color=indigo&shade=500"
+                      alt="Vending Machine"
                     />
                   </div>
                   <div className="mt-5 flex-1 h-0 overflow-y-auto">
@@ -131,8 +132,8 @@ export default function Dashboard() {
             <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
               <img
                 className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=500"
-                alt="Workflow"
+                src="https://tailwindui.com/img/logos/Vending Machine-mark.svg?color=indigo&shade=500"
+                alt="Vending Machine"
               />
             </div>
             <div className="flex-1 flex flex-col overflow-y-auto">
@@ -174,7 +175,7 @@ export default function Dashboard() {
             </button>
             <div className="flex-1 px-4 flex justify-between">
               <div className="flex-1 flex">
-                <form className="w-full flex md:ml-0" action="#" method="GET">
+                <form className="w-full flex md:ml-0" method="POST" action={e => e.preventDefault()}>
                   <label htmlFor="search-field" className="sr-only">
                     Search
                   </label>
@@ -188,6 +189,8 @@ export default function Dashboard() {
                       placeholder="Search"
                       type="search"
                       name="search"
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
                     />
                   </div>
                 </form>
@@ -252,7 +255,7 @@ export default function Dashboard() {
               </div>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="py-4">
-                  <Products />
+                  <Products search={search} />
                 </div>
               </div>
             </div>
