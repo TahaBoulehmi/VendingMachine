@@ -22,7 +22,7 @@ module.exports = {
             return res.serverError(err)
           })
 
-        return updatedUser ? res.ok() : res.notFound()
+        return updatedUser ? res.ok({}) : res.notFound()
       })
       .intercept('error', err => {
         return res.badRequest(err)
@@ -35,6 +35,6 @@ module.exports = {
         return res.serverError(err)
       })
 
-    return updatedUser ? res.ok() : res.notFound()
+    return updatedUser ? res.ok({}) : res.notFound()
   },
 }

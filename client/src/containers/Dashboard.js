@@ -1,24 +1,34 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext, useEffect } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { CreditCardIcon, MenuAlt2Icon } from '@heroicons/react/outline'
 import { SearchIcon } from '@heroicons/react/solid'
+import { UserContext } from '../contexts/UserContext'
 import Products from '../components/Products'
 import ProductForm from '../components/ProductForm'
 import SideBar from '../components/SideBar'
-
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
+import useQuery from '../helpers/useQuery'
+import { signout } from '../helpers/queries'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function Dashboard() {
+  const userNavigation = [
+    { name: 'Your Profile', href: '#', onClick: () => {} },
+    { name: 'Sign out', href: '#', onClick: () => runQuery(() => signout()) },
+  ]
+
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [openProductForm, setOpenProductForm] = useState(false)
+  const { setUser } = useContext(UserContext)
+
+  const { isQuerySuccessful, runQuery } = useQuery()
+  useEffect(() => {
+    if (isQuerySuccessful) setUser({})
+  }, [isQuerySuccessful, setUser])
+
   return (
     <>
       <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
@@ -91,6 +101,7 @@ export default function Dashboard() {
                           {({ active }) => (
                             <a
                               href={item.href}
+                              onClick={item.onClick}
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
                                 'block px-4 py-2 text-sm text-gray-700'

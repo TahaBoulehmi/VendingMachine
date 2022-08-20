@@ -18,7 +18,7 @@ module.exports = {
         return res.serverError(err)
       })
       .fetch()
-    if (createdUser) {
+    if (user) {
       req.session.user = user
       return res.ok({ user })
     }
@@ -53,6 +53,6 @@ module.exports = {
 
   signout: function (req, res) {
     req.session.user = null
-    return res.ok()
+    return res.ok({})
   },
 }

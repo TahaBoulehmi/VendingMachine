@@ -23,6 +23,10 @@ const useQuery = function (queryOptions) {
   const runQuery = useCallback(
     fetcher => {
       setIsRunningQuery(true)
+      setIsQuerySuccessful(false)
+      setResult()
+      setData()
+      setErrors()
 
       return fetcher()
         .then(response => {
@@ -30,8 +34,8 @@ const useQuery = function (queryOptions) {
           return response.json()
         })
         .then(data => {
-          console.log(data)
           if (mounted.current) {
+            console.log(data)
             setData(queryOptions?.transformResult != null ? queryOptions.transformResult(data) : data)
             setIsRunningQuery(false)
             setIsQuerySuccessful(true)
@@ -39,6 +43,7 @@ const useQuery = function (queryOptions) {
         })
         .catch(err => {
           if (mounted.current) {
+            console.log(err)
             setErrors(err)
             setIsRunningQuery(false)
             setIsQuerySuccessful(false)

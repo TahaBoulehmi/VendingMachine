@@ -19,7 +19,7 @@ module.exports.routes = {
    ***************************************************************************/
 
   '/': function (req, res) {
-    return res.ok()
+    return res.ok({})
   },
   'POST /signup': 'UserController.signup',
   'PUT /signin': 'UserController.signin',
