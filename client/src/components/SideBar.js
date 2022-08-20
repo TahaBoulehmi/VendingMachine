@@ -92,9 +92,8 @@ export default function SideBar(props) {
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
                     {navigation.map(item => (
-                      <Hide when={item.role !== undefined && item.role !== user?.role}>
+                      <Hide when={item.role !== undefined && item.role !== user?.role} key={item.name}>
                         <a
-                          key={item.name}
                           href={item.href}
                           onClick={item.onClick}
                           className={classNames(
@@ -135,9 +134,8 @@ export default function SideBar(props) {
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 space-y-1">
               {navigation.map(item => (
-                <Hide when={item.role !== undefined && item.role !== user.role}>
+                <Hide when={item.role !== undefined && item.role !== user.role} key={item.name}>
                   <a
-                    key={item.name}
                     href={item.href}
                     onClick={item.onClick}
                     className={classNames(

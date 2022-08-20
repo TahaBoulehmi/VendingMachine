@@ -9,7 +9,7 @@ const Passwords = require('machinepack-passwords')
 
 module.exports = {
   signup: async function (req, res) {
-    const createdUser = await User.create({
+    const user = await User.create({
       username: req.param('username'),
       password: req.param('password'),
       role: req.param('role'),
@@ -19,8 +19,8 @@ module.exports = {
       })
       .fetch()
     if (createdUser) {
-      req.session.user = createdUser
-      return res.ok({ user: createdUser })
+      req.session.user = user
+      return res.ok({ user })
     }
   },
 
@@ -45,7 +45,7 @@ module.exports = {
 
         success: function () {
           req.session.user = user
-          return res.ok()
+          return res.ok({ user })
         },
       })
     }

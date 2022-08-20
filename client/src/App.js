@@ -1,5 +1,4 @@
 import { Route, Routes, BrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from 'react-query'
 import Signin from './containers/Signin'
 import Signup from './containers/Signup'
 import NotFound from './containers/NotFound'
@@ -8,8 +7,6 @@ import { UserProvider } from './contexts/UserContext'
 import Guard from './guards/Guard'
 import IsLoggedInGuard from './guards/IsLoggedInGuard'
 import IsLoggedOutGuard from './guards/IsLoggedOutGuard'
-
-const queryClient = new QueryClient()
 
 const routes = [
   { path: '/', view: <Dashboard />, exact: true, guards: [IsLoggedInGuard] },
@@ -20,25 +17,23 @@ const routes = [
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient} contextSharing={true}>
-      <UserProvider>
-        <BrowserRouter>
-          <Routes>
-            {routes.map(route => (
-              <Route
-                key={route.path}
-                path={route.path}
-                element={
-                  <>
-                    <Guard route={route}>{route.view}</Guard>
-                  </>
-                }
-              />
-            ))}
-          </Routes>
-        </BrowserRouter>
-      </UserProvider>
-    </QueryClientProvider>
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          {routes.map(route => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={
+                <>
+                  <Guard route={route}>{route.view}</Guard>
+                </>
+              }
+            />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   )
 }
 export default App

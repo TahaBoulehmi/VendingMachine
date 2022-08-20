@@ -1,21 +1,31 @@
 import { Link } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
+import useQuery from '../helpers/useQuery'
+import { signin } from '../helpers/queries'
+import { UserContext } from '../contexts/UserContext'
+import Logo from '../assets/logo.svg'
 
 export default function Signin() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { setUser } = useContext(UserContext)
+
+  const { isQuerySuccessful, data, runQuery } = useQuery()
+
   const handleSubmit = e => {
     e.preventDefault()
+    runQuery(() => signin(username, password))
   }
+  useEffect(() => {
+    if (isQuerySuccessful) {
+      setUser(data.user)
+    }
+  }, [isQuerySuccessful])
   return (
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-            alt="Workflow"
-          />
+          <img className="mx-auto h-12 w-auto" src={Logo} alt="Vending Machine" />
           <h2 className="mt-6 text-center text-3xl tracking-tight font-bold text-gray-900">
             Sign in to your account
           </h2>
