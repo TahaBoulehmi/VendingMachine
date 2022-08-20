@@ -48,6 +48,10 @@ module.exports = {
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
   },
+  customToJSON: function () {
+    // Return a shallow copy of this record with the password and ssn removed.
+    return _.omit(this, ['password', 'products'])
+  },
   beforeCreate: function (values, proceed) {
     values.username ? (values.username = sails.helpers.format.with({ username: values.username })) : null
     if (values.password) {
