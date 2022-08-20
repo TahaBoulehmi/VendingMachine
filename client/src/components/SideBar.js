@@ -6,6 +6,7 @@ import { UserContext } from '../contexts/UserContext'
 import Reset from '../components/Reset'
 import Deposit from '../components/Deposit'
 import { Hide, Show } from '../helpers/Conditionals'
+import Logo from '../assets/logo.svg'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -86,11 +87,7 @@ export default function SideBar(props) {
                   </div>
                 </Transition.Child>
                 <div className="flex-shrink-0 flex items-center px-4">
-                  <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/Vending Machine-mark.svg?color=indigo&shade=500"
-                    alt="Vending Machine"
-                  />
+                  <img className="h-8 w-auto" src={Logo} alt="Vending Machine" />
                 </div>
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
@@ -133,11 +130,7 @@ export default function SideBar(props) {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex-1 flex flex-col min-h-0 bg-gray-800">
           <div className="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
-            <img
-              className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/Vending Machine-mark.svg?color=indigo&shade=500"
-              alt="Vending Machine"
-            />
+            <img className="h-8 w-auto" src={Logo} alt="Vending Machine" />
           </div>
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 space-y-1">

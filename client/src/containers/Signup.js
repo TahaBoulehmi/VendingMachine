@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import { Fragment, useState } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
+import Logo from '../assets/logo.svg'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -19,11 +20,7 @@ export default function Signup() {
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            className="mx-auto h-12 w-auto"
-            src="https://tailwindui.com/img/logos/workflow-mark.svg?color=indigo&shade=600"
-            alt="Workflow"
-          />
+          <img className="mx-auto h-12 w-auto" src={Logo} alt="Vending Machine" />
           <h2 className="mt-6 text-center text-3xl tracking-tight font-bold text-gray-900">
             Sign up for free
           </h2>
