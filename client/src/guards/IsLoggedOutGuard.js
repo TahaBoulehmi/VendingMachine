@@ -4,9 +4,9 @@ import { UserContext } from '../contexts/UserContext'
 
 // This Guard Component checks if the user is logged out
 const IsLoggedOutGuard = props => {
-  const { isLoggedIn } = useContext(UserContext)
+  const { id } = useContext(UserContext)
 
-  if (!isLoggedIn) {
+  if (!id) {
     return props.children
   }
 
