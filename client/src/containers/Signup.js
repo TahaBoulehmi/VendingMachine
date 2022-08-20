@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState, useContext } from 'react'
+import useQuery from '../helpers/useQuery'
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/solid'
 import Logo from '../assets/logo.svg'
+import { signup } from '../helpers/queries'
+import { UserContext } from '../contexts/UserContext'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -12,10 +15,18 @@ export default function Signup() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState({ name: 'Buyer', id: 0 })
+  const { setUser } = useContext(UserContext)
+
+  const { isQuerySuccessful, data, runQuery } = useQuery()
   const handleSubmit = e => {
     e.preventDefault()
+    runQuery(() => signup(username, password, role))
   }
-
+  useEffect(() => {
+    if (isQuerySuccessful) {
+      setUser(data.user)
+    }
+  }, [isQuerySuccessful])
   return (
     <>
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
