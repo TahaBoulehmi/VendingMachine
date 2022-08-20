@@ -1,16 +1,11 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Dialog, Transition } from '@headlessui/react'
 import { HomeIcon, DocumentAddIcon, CashIcon, XIcon, UploadIcon } from '@heroicons/react/outline'
-
+import { UserContext } from '../contexts/UserContext'
 import Reset from '../components/Reset'
 import Deposit from '../components/Deposit'
-
-const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
-  { name: 'Add Product', href: '#', icon: DocumentAddIcon, current: false, role: 1 },
-  { name: 'Deposit', href: '#', icon: UploadIcon, current: false, role: 0 },
-  { name: 'Reset', href: '#', icon: CashIcon, current: false, role: 0 },
-]
+import { Hide, Show } from '../helpers/Conditionals'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -19,6 +14,30 @@ function classNames(...classes) {
 export default function SideBar(props) {
   const [openReset, setOpenReset] = useState(false)
   const [openDeposit, setOpenDeposit] = useState(false)
+  const { role } = useContext(UserContext)
+  const navigate = useNavigate()
+
+  const navigation = [
+    { name: 'Dashboard', href: '#', onClick: () => navigate('/asd'), icon: HomeIcon, current: true },
+    {
+      name: 'Add Product',
+      href: '#',
+      onClick: () => navigate('/asd'),
+      icon: DocumentAddIcon,
+      current: false,
+      role: 1,
+    },
+    {
+      name: 'Deposit',
+      href: '#',
+      onClick: () => setOpenDeposit(true),
+      icon: UploadIcon,
+      current: false,
+      role: 0,
+    },
+    { name: 'Reset', href: '#', onClick: () => setOpenReset(true), icon: CashIcon, current: false, role: 0 },
+  ]
+
   return (
     <>
       <Transition.Root show={props.sidebarOpen} as={Fragment}>
@@ -76,25 +95,28 @@ export default function SideBar(props) {
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
                     {navigation.map(item => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? 'bg-gray-900 text-white'
-                            : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                          'group flex items-center px-2 py-2 text-base font-medium rounded-md'
-                        )}
-                      >
-                        <item.icon
+                      <Hide when={item.role !== undefined && item.role !== role}>
+                        <a
+                          key={item.name}
+                          href={item.href}
+                          onClick={item.onClick}
                           className={classNames(
-                            item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
-                            'mr-4 flex-shrink-0 h-6 w-6'
+                            item.current
+                              ? 'bg-gray-900 text-white'
+                              : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                            'group flex items-center px-2 py-2 text-base font-medium rounded-md'
                           )}
-                          aria-hidden="true"
-                        />
-                        {item.name}
-                      </a>
+                        >
+                          <item.icon
+                            className={classNames(
+                              item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                              'mr-4 flex-shrink-0 h-6 w-6'
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </a>
+                      </Hide>
                     ))}
                   </nav>
                 </div>
@@ -120,32 +142,38 @@ export default function SideBar(props) {
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 space-y-1">
               {navigation.map(item => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? 'bg-gray-900 text-white'
-                      : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
-                  )}
-                >
-                  <item.icon
+                <Hide when={item.role !== undefined && item.role !== role}>
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    onClick={item.onClick}
                     className={classNames(
-                      item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
-                      'mr-3 flex-shrink-0 h-6 w-6'
+                      item.current
+                        ? 'bg-gray-900 text-white'
+                        : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                      'group flex items-center px-2 py-2 text-sm font-medium rounded-md'
                     )}
-                    aria-hidden="true"
-                  />
-                  {item.name}
-                </a>
+                  >
+                    <item.icon
+                      className={classNames(
+                        item.current ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300',
+                        'mr-3 flex-shrink-0 h-6 w-6'
+                      )}
+                      aria-hidden="true"
+                    />
+                    {item.name}
+                  </a>
+                </Hide>
               ))}
             </nav>
           </div>
         </div>
       </div>
-      <Reset open={openReset} setOpen={setOpenReset} />
-      <Deposit open={openDeposit} setOpen={setOpenDeposit} />
+
+      <Show when={role === 0}>
+        <Reset open={openReset} setOpen={setOpenReset} />
+        <Deposit open={openDeposit} setOpen={setOpenDeposit} />
+      </Show>
     </>
   )
 }
