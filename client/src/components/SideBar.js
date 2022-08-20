@@ -15,7 +15,7 @@ function classNames(...classes) {
 export default function SideBar(props) {
   const [openReset, setOpenReset] = useState(false)
   const [openDeposit, setOpenDeposit] = useState(false)
-  const { role } = useContext(UserContext)
+  const { user } = useContext(UserContext)
   const navigate = useNavigate()
 
   const navigation = [
@@ -92,7 +92,7 @@ export default function SideBar(props) {
                 <div className="mt-5 flex-1 h-0 overflow-y-auto">
                   <nav className="px-2 space-y-1">
                     {navigation.map(item => (
-                      <Hide when={item.role !== undefined && item.role !== role}>
+                      <Hide when={item.role !== undefined && item.role !== user?.role}>
                         <a
                           key={item.name}
                           href={item.href}
@@ -135,7 +135,7 @@ export default function SideBar(props) {
           <div className="flex-1 flex flex-col overflow-y-auto">
             <nav className="flex-1 px-2 py-4 space-y-1">
               {navigation.map(item => (
-                <Hide when={item.role !== undefined && item.role !== role}>
+                <Hide when={item.role !== undefined && item.role !== user.role}>
                   <a
                     key={item.name}
                     href={item.href}
@@ -163,7 +163,7 @@ export default function SideBar(props) {
         </div>
       </div>
 
-      <Show when={role === 0}>
+      <Show when={user?.role === 0}>
         <Reset open={openReset} setOpen={setOpenReset} />
         <Deposit open={openDeposit} setOpen={setOpenDeposit} />
       </Show>

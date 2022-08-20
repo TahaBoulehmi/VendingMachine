@@ -20,7 +20,7 @@ export default function Signup() {
   const { isQuerySuccessful, data, runQuery } = useQuery()
   const handleSubmit = e => {
     e.preventDefault()
-    runQuery(() => signup(username, password, role))
+    runQuery(() => signup(username, password, role.id))
   }
   useEffect(() => {
     if (isQuerySuccessful) {

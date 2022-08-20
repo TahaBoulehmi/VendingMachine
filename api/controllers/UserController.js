@@ -12,6 +12,7 @@ module.exports = {
     const createdUser = await User.create({
       username: req.param('username'),
       password: req.param('password'),
+      role: req.param('role'),
     })
       .intercept(err => {
         return res.serverError(err)
