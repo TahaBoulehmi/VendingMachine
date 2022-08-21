@@ -1,9 +1,21 @@
-/* This example requires Tailwind CSS v2.0+ */
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
+import useQuery from '../helpers/useQuery'
+import { deposit } from '../helpers/queries'
+import { Show } from '../helpers/Conditionals'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/outline'
 
 export default function Deposit(props) {
+  const coins = [5, 10, 20, 50, 100]
+  const { isQuerySuccessful, setIsQuerySuccessful, runQuery } = useQuery()
+  useEffect(() => {
+    const timeoutID = setTimeout(() => setIsQuerySuccessful(false), 1000)
+    return () => {
+      // 👇️ clear timeout when component unmounts
+      clearTimeout(timeoutID)
+    }
+  }, [isQuerySuccessful, setIsQuerySuccessful])
+
   return (
     <Transition.Root show={props.open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={props.setOpen}>
@@ -32,54 +44,28 @@ export default function Deposit(props) {
             >
               <Dialog.Panel className="relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-sm sm:w-full sm:p-6">
                 <div>
-                  <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                    <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
-                  </div>
+                  <Show when={isQuerySuccessful}>
+                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                      <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                    </div>
+                  </Show>
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                      Payment successful
+                      Deposit Money
                     </Dialog.Title>
                     <div className="mt-2">
-                      <button
-                        type="button"
-                        className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
-                      >
-                        <span className="h-6 w-6" aria-hidden="true">
-                          5
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
-                      >
-                        <span className="h-6 w-6" aria-hidden="true">
-                          10
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
-                      >
-                        <span className="h-6 w-6" aria-hidden="true">
-                          20
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
-                      >
-                        <span className="h-6 w-6" aria-hidden="true">
-                          50
-                        </span>
-                      </button>
-                      <button
-                        type="button"
-                        className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
-                      >
-                        <span className="h-6 w-6" aria-hidden="true">
-                          100
-                        </span>
-                      </button>
+                      {coins.map(coin => (
+                        <button
+                          key={coin}
+                          onClick={() => runQuery(() => deposit(coin))}
+                          type="button"
+                          className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
+                        >
+                          <span className="h-6 w-6" aria-hidden="true">
+                            {coin}
+                          </span>
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>

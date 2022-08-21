@@ -1,9 +1,9 @@
-module.exports = {
+const validateDeposit = {
   friendlyName: 'Validate Deposit',
 
   description: 'Validate Deposit money.',
 
-  acceptedCoints: [5, 10, 20, 50, 100],
+  acceptedCoins: [5, 10, 20, 50, 100],
 
   inputs: {
     deposit: {
@@ -25,6 +25,7 @@ module.exports = {
   sync: true,
 
   fn: function (inputs, exits) {
-    return acceptedCoints.contains(inputs.deposit) ? exits.success(true) : exits.error(false)
+    return validateDeposit.acceptedCoins.includes(inputs.deposit) ? exits.success(true) : exits.error(false)
   },
 }
+module.exports = validateDeposit

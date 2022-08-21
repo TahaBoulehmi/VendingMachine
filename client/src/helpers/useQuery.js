@@ -59,6 +59,7 @@ const useQuery = function (queryOptions) {
     result,
     errors,
     isQuerySuccessful,
+    setIsQuerySuccessful,
     isRunningQuery,
     isError: errors != null,
     clearErrors: () => setErrors(undefined),

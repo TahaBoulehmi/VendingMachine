@@ -21,9 +21,19 @@ module.exports.routes = {
   '/': function (req, res) {
     return res.ok({})
   },
+  // AUTHENTICATION
   'POST /signup': 'UserController.signup',
   'PUT /signin': 'UserController.signin',
   'PUT /signout': 'UserController.signout',
+
+  // MONEY
+  'POST /deposit': 'DepositController.deposit',
+  'POST /reset': 'DepositController.reset',
+
+  // PRODUCTS
+  'POST /product': 'ProductController.createProduct',
+  'PUT /product': 'ProductController.updateProduct',
+  'DELETE /product': 'ProductController.deleteProduct',
 
   /***************************************************************************
    *                                                                          *

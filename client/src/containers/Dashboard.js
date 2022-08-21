@@ -22,7 +22,7 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [openProductForm, setOpenProductForm] = useState(false)
-  const { setUser } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
 
   const { isQuerySuccessful, runQuery } = useQuery()
   useEffect(() => {
@@ -68,9 +68,10 @@ export default function Dashboard() {
               <div className="ml-4 flex items-center md:ml-6">
                 <button
                   type="button"
-                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 flex"
                 >
                   <span className="sr-only">View notifications</span>
+                  {user.deposit}
                   <CreditCardIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
