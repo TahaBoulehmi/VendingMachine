@@ -31,10 +31,15 @@ const useQuery = function (queryOptions) {
       return fetcher()
         .then(response => {
           setResult(response)
-          return response.json()
+
+          if (response.status === 200) return response.json()
+          else {
+            throw new Error(response)
+          }
         })
         .then(data => {
           if (mounted.current) {
+            console.log(result)
             console.log(data)
             setData(queryOptions?.transformResult != null ? queryOptions.transformResult(data) : data)
             setIsRunningQuery(false)

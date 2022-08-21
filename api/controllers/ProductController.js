@@ -6,10 +6,9 @@
  */
 
 module.exports = {
-  listProducts: async function (req, res) {
+  fetchProducts: async function (req, res) {
     const products = await Product.find()
       .select(['name', 'cost', 'amountAvailable'])
-      .sort('creationDate DESC')
       .intercept(err => {
         return res.serverError(err)
       })

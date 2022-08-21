@@ -15,7 +15,7 @@ const validateDeposit = {
 
   exits: {
     success: {
-      description: 'Your money was deposited successfully.',
+      description: 'The coin you want to deposit is valid',
     },
     error: {
       description: 'Only coins of 5, 10, 20, 50, 100 are accepted.',

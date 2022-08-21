@@ -19,10 +19,10 @@ export default function SideBar(props) {
   const navigate = useNavigate()
 
   const navigation = [
-    { name: 'Dashboard', href: '#', onClick: () => navigate('/asd'), icon: HomeIcon, current: true },
+    { name: 'Dashboard', href: () => false, onClick: () => navigate('/'), icon: HomeIcon, current: true },
     {
       name: 'Add Product',
-      href: '#',
+      href: () => false,
       onClick: () => props.setOpenProductForm(true),
       icon: DocumentAddIcon,
       current: false,
@@ -30,13 +30,20 @@ export default function SideBar(props) {
     },
     {
       name: 'Deposit',
-      href: '#',
+      href: () => false,
       onClick: () => setOpenDeposit(true),
       icon: UploadIcon,
       current: false,
       role: 0,
     },
-    { name: 'Reset', href: '#', onClick: () => setOpenReset(true), icon: CashIcon, current: false, role: 0 },
+    {
+      name: 'Reset',
+      href: () => false,
+      onClick: () => setOpenReset(true),
+      icon: CashIcon,
+      current: false,
+      role: 0,
+    },
   ]
 
   return (
