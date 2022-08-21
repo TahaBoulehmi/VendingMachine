@@ -25,6 +25,7 @@ module.exports.routes = {
   'POST /signup': 'UserController.signup',
   'PUT /signin': 'UserController.signin',
   'PUT /signout': 'UserController.signout',
+  'GET /authenticate': 'UserController.authenticate',
 
   // MONEY
   'POST /deposit': 'DepositController.deposit',

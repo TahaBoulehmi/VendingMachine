@@ -23,7 +23,7 @@ module.exports = {
           return res.serverError(err)
         })
 
-      return updatedUser ? res.ok({}) : res.notFound()
+      return updatedUser ? res.ok({}) : res.notFound({})
     } else {
       return res.badRequest()
     }
@@ -35,6 +35,6 @@ module.exports = {
         return res.serverError(err)
       })
 
-    return updatedUser ? res.ok({}) : res.notFound()
+    return updatedUser ? res.ok({}) : res.notFound({})
   },
 }

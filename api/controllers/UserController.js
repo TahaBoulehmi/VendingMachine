@@ -55,4 +55,11 @@ module.exports = {
     req.session.user = null
     return res.ok({})
   },
+
+  authenticate: function (req, res) {
+    if (req.session && req.session.user) {
+      return res.ok(req.session.user)
+    }
+    return res.notFound({})
+  },
 }

@@ -1,9 +1,9 @@
-const HOST = 'http://localhost:1337'
+export const HOST = 'http://localhost:1337'
 const HEADERS = {
   Accept: 'application/json',
   'Content-Type': 'application/json',
 }
-const endpoints = {
+export const endpoints = {
   signin: { api: HOST + '/signin', method: 'PUT', headers: HEADERS },
   signup: { api: HOST + '/signup', method: 'POST', headers: HEADERS },
   signout: { api: HOST + '/signout', method: 'PUT', headers: HEADERS },
@@ -13,6 +13,7 @@ const endpoints = {
   deleteProducts: { api: HOST + '/products', method: 'DELETE', headers: HEADERS },
   deposit: { api: HOST + '/deposit', method: 'POST', headers: HEADERS },
   reset: { api: HOST + '/reset', method: 'POST', headers: HEADERS },
+  authenticate: { api: '/authenticate' },
 }
 
 // AUTHENTICATION
