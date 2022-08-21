@@ -11,13 +11,13 @@ module.exports = {
     const validateDeposit = sails.helpers.validateDeposit(req.param('deposit'))
 
     if (validateDeposit) {
-      const user = await User.findOne(req.session.user.id)
+      const user = await User.findOne({ id: req.session.user.id, role: 0 })
         .select(['deposit'])
         .intercept(err => {
           return res.serverError(err)
         })
       if (!user) return res.notFound()
-      const updatedUser = await User.updateOne(req.session.user.id)
+      const updatedUser = await User.updateOne({ id: req.session.user.id, role: 0 })
         .set({ deposit: user.deposit + req.param('deposit') })
         .intercept(err => {
           return res.serverError(err)
@@ -29,7 +29,7 @@ module.exports = {
     }
   },
   reset: async function (req, res) {
-    const updatedUser = await User.updateOne(req.session.user.id)
+    const updatedUser = await User.updateOne({ id: req.session.user.id, role: 0 })
       .set({ deposit: 0 })
       .intercept(err => {
         return res.serverError(err)

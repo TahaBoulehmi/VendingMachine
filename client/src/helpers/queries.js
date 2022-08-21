@@ -11,6 +11,7 @@ export const endpoints = {
   createProducts: { api: HOST + '/products', method: 'POST', headers: HEADERS },
   updateProduct: { api: HOST + '/products', method: 'PUT', headers: HEADERS },
   deleteProducts: { api: HOST + '/products', method: 'DELETE', headers: HEADERS },
+  buyProducts: { api: HOST + '/buy', method: 'POST', headers: HEADERS },
   deposit: { api: HOST + '/deposit', method: 'POST', headers: HEADERS },
   reset: { api: HOST + '/reset', method: 'POST', headers: HEADERS },
   authenticate: { api: '/authenticate' },
@@ -76,6 +77,15 @@ export const deleteProducts = productId => {
     headers: endpoints.deleteProducts.headers,
     credentials: 'include',
     body: JSON.stringify({ productId }),
+  })
+}
+
+export const buyProducts = (productId, amount) => {
+  return fetch(endpoints.buyProducts.api, {
+    method: endpoints.buyProducts.method,
+    headers: endpoints.buyProducts.headers,
+    credentials: 'include',
+    body: JSON.stringify({ productId, amount }),
   })
 }
 

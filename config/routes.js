@@ -37,6 +37,9 @@ module.exports.routes = {
   'PUT /products': 'ProductController.updateProduct',
   'DELETE /products': 'ProductController.deleteProduct',
 
+  // BUY
+  'POST /buy': 'ProductController.buyProduct',
+
   /***************************************************************************
    *                                                                          *
    * More custom routes here...                                               *

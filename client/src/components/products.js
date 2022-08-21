@@ -1,12 +1,13 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState, useRef } from 'react'
 import { PencilAltIcon, TrashIcon, ShoppingCartIcon } from '@heroicons/react/solid'
 import { UserContext } from '../contexts/UserContext'
 import productImage from '../assets/product.png'
 import { Show } from '../helpers/Conditionals'
 import useQuery from '../helpers/useQuery'
-import { deleteProducts, fetchProducts } from '../helpers/queries'
+import { deleteProducts, fetchProducts, buyProducts } from '../helpers/queries'
 
 export default function Products(props) {
+  const quantityRefs = useRef([])
   const [products, setProducts] = useState([])
   const { user } = useContext(UserContext)
   const { isError, isRunningQuery, isQuerySuccessful, runQuery } = useQuery({
@@ -33,6 +34,11 @@ export default function Products(props) {
   const deleteProduct = productId => {
     deleteProductQuery(() => deleteProducts(productId))
   }
+
+  const { runQuery: buyProductQuery } = useQuery()
+  const buyProduct = productId => {
+    buyProductQuery(() => buyProducts(productId, quantityRefs.current[productId].value))
+  }
   return (
     <>
       <Show when={isRunningQuery}>Loading Data</Show>
@@ -49,7 +55,7 @@ export default function Products(props) {
                   className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
                 >
                   <div className="flex-1 flex flex-col p-8">
-                    <Show when={user?.role === 0}>
+                    <Show when={user?.role === 0 && product.amountAvailable > 0}>
                       <div className="relative w-full">
                         <div className="absolute -left-4 -top-4">
                           <label htmlFor="quantity" className="sr-only">
@@ -57,6 +63,9 @@ export default function Products(props) {
                           </label>
                           <select
                             id="quantity"
+                            ref={element => {
+                              quantityRefs.current[product.id] = element
+                            }}
                             name="quantity"
                             className="rounded-md border border-gray-300 text-base font-medium text-gray-700 text-left shadow-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                           >
@@ -83,11 +92,12 @@ export default function Products(props) {
                     </dl>
                   </div>
                   <div>
-                    <Show when={user?.role === 0}>
+                    <Show when={user?.role === 0 && product.amountAvailable > 0}>
                       <div className="-mt-px flex divide-x divide-gray-200">
                         <div className="-ml-px w-0 flex-1 flex">
                           <a
                             href={() => false}
+                            onClick={() => buyProduct(product.id)}
                             className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-green-700 font-medium border border-transparent rounded-br-lg hover:text-green-500 cursor-pointer"
                           >
                             <ShoppingCartIcon className="w-5 h-5 text-green-400" aria-hidden="true" />
