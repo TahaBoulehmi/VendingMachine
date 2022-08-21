@@ -8,8 +8,8 @@ export const endpoints = {
   signup: { api: HOST + '/signup', method: 'POST', headers: HEADERS },
   signout: { api: HOST + '/signout', method: 'PUT', headers: HEADERS },
   fetchProducts: { api: HOST + '/products', method: 'GET', headers: HEADERS },
-  addProducts: { api: HOST + '/products', method: 'POST', headers: HEADERS },
-  editProducts: { api: HOST + '/products', method: 'PUT', headers: HEADERS },
+  createProducts: { api: HOST + '/products', method: 'POST', headers: HEADERS },
+  updateProduct: { api: HOST + '/products', method: 'PUT', headers: HEADERS },
   deleteProducts: { api: HOST + '/products', method: 'DELETE', headers: HEADERS },
   deposit: { api: HOST + '/deposit', method: 'POST', headers: HEADERS },
   reset: { api: HOST + '/reset', method: 'POST', headers: HEADERS },
@@ -52,19 +52,19 @@ export const fetchProducts = sellerId => {
   })
 }
 
-export const addProducts = (name, cost, amountAvailable) => {
-  return fetch(endpoints.addProducts.api, {
-    method: endpoints.addProducts.method,
-    headers: endpoints.addProducts.headers,
+export const createProducts = (name, cost, amountAvailable) => {
+  return fetch(endpoints.createProducts.api, {
+    method: endpoints.createProducts.method,
+    headers: endpoints.createProducts.headers,
     credentials: 'include',
     body: JSON.stringify({ name, cost, amountAvailable }),
   })
 }
 
-export const editProducts = (productId, name, cost, amountAvailable) => {
-  return fetch(endpoints.editProducts.api, {
-    method: endpoints.editProducts.method,
-    headers: endpoints.editProducts.headers,
+export const updateProduct = (productId, name, cost, amountAvailable) => {
+  return fetch(endpoints.updateProduct.api, {
+    method: endpoints.updateProduct.method,
+    headers: endpoints.updateProduct.headers,
     credentials: 'include',
     body: JSON.stringify({ productId, name, cost, amountAvailable }),
   })

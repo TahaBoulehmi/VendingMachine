@@ -16,6 +16,10 @@ module.exports = {
       type: 'number',
       required: true,
       min: 0,
+      isInteger: true,
+      custom: function (value) {
+        return value % 5 === 0
+      },
     },
     amountAvailable: {
       type: 'number',

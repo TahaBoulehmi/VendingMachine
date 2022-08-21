@@ -23,7 +23,7 @@ export default function SideBar(props) {
     {
       name: 'Add Product',
       href: '#',
-      onClick: () => navigate('/asd'),
+      onClick: () => props.setOpenProductForm(true),
       icon: DocumentAddIcon,
       current: false,
       role: 1,

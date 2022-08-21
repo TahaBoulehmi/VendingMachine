@@ -32,9 +32,10 @@ module.exports.routes = {
   'POST /reset': 'DepositController.reset',
 
   // PRODUCTS
-  'POST /product': 'ProductController.createProduct',
-  'PUT /product': 'ProductController.updateProduct',
-  'DELETE /product': 'ProductController.deleteProduct',
+  'GET /products': 'ProductController.fetchProducts',
+  'POST /products': 'ProductController.createProduct',
+  'PUT /products': 'ProductController.updateProduct',
+  'DELETE /products': 'ProductController.deleteProduct',
 
   /***************************************************************************
    *                                                                          *

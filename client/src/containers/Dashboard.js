@@ -8,6 +8,7 @@ import ProductForm from '../components/ProductForm'
 import SideBar from '../components/SideBar'
 import useQuery from '../helpers/useQuery'
 import { signout } from '../helpers/queries'
+import { Show } from '../helpers/Conditionals'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -22,6 +23,8 @@ export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')
   const [openProductForm, setOpenProductForm] = useState(false)
+  const [product, setProduct] = useState({})
+
   const { user, setUser } = useContext(UserContext)
 
   const { isQuerySuccessful, runQuery } = useQuery()
@@ -31,7 +34,11 @@ export default function Dashboard() {
 
   return (
     <>
-      <SideBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+      <SideBar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+        setOpenProductForm={setOpenProductForm}
+      />
       <div>
         <div className="md:pl-64 flex flex-col">
           <div className="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
@@ -134,7 +141,10 @@ export default function Dashboard() {
           </main>
         </div>
       </div>
-      <ProductForm open={openProductForm} setOpen={setOpenProductForm} />
+      <Show
+        when={openProductForm}
+        render={() => <ProductForm open={openProductForm} setOpen={setOpenProductForm} product={product} />}
+      ></Show>
     </>
   )
 }

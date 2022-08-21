@@ -1,10 +1,36 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useRef } from 'react'
+import { Fragment, useRef, useState, useEffect } from 'react'
+import { Show } from '../helpers/Conditionals'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/outline'
+import useQuery from '../helpers/useQuery'
+import { updateProduct, createProducts } from '../helpers/queries'
 
 export default function ProductForm(props) {
   const cancelButtonRef = useRef(null)
+  const [name, setName] = useState(props.product.name)
+  const [cost, setCost] = useState(props.product.cost)
+  const [amountAvailable, setAmountAvailable] = useState(props.product.amountAvailable)
+
+  const { isQuerySuccessful, data, runQuery } = useQuery()
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    runQuery(() =>
+      props.product.id
+        ? updateProduct(props.product.id, name, cost, amountAvailable)
+        : createProducts(name, cost, amountAvailable)
+    )
+  }
+  useEffect(() => {
+    if (isQuerySuccessful) {
+      const timeoutID = setTimeout(() => props.setOpen(false), 1500)
+      return () => {
+        // 👇️ clear timeout when component unmounts
+        clearTimeout(timeoutID)
+      }
+    }
+  }, [isQuerySuccessful])
 
   return (
     <Transition.Root show={props.open} as={Fragment}>
@@ -34,21 +60,25 @@ export default function ProductForm(props) {
             >
               <Dialog.Panel className="relative bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full sm:p-6">
                 <div>
-                  <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                    <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
-                  </div>
+                  <Show when={isQuerySuccessful}>
+                    <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                      <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                    </div>
+                  </Show>
                   <div className="mt-3 text-center sm:mt-5">
                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
                       Add Product
                     </Dialog.Title>
                     <div className="mt-2 ">
-                      <form className="space-y-6" action="#" method="POST">
+                      <form className="space-y-6" action="#" method="POST" onSubmit={handleSubmit}>
                         <div>
                           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
                             Name
                           </label>
                           <div className="mt-1">
                             <input
+                              value={name}
+                              onChange={e => setName(e.target.value)}
                               id="name"
                               name="name"
                               type="text"
@@ -68,8 +98,12 @@ export default function ProductForm(props) {
                               <span className="text-gray-500 sm:text-sm">$</span>
                             </div>
                             <input
-                              type="text"
+                              value={cost}
+                              onChange={e => setCost(e.target.value)}
+                              type="number"
                               name="cost"
+                              step="5"
+                              min="0"
                               id="cost"
                               className="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md"
                               placeholder="0"
@@ -92,6 +126,8 @@ export default function ProductForm(props) {
                           </label>
                           <div className="mt-1">
                             <input
+                              value={amountAvailable}
+                              onChange={e => setAmountAvailable(e.target.value)}
                               id="amount-available"
                               name="amount-available"
                               type="number"
@@ -110,7 +146,7 @@ export default function ProductForm(props) {
                   <button
                     type="button"
                     className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:col-start-2 sm:text-sm"
-                    onClick={() => props.setOpen(false)}
+                    onClick={handleSubmit}
                   >
                     Save
                   </button>
