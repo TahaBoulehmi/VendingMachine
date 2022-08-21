@@ -15,7 +15,7 @@ module.exports = {
     cost: {
       type: 'number',
       required: true,
-      min: 0,
+      min: 5,
       isInteger: true,
       custom: function (value) {
         return value % 5 === 0
@@ -41,5 +41,18 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+  },
+  afterCreate: function (values, proceed) {
+    sails.sockets.blast('product', { status: 'create', product: values })
+    return proceed()
+  },
+
+  afterUpdate: function (values, proceed) {
+    sails.sockets.blast('product', { status: 'update', product: values })
+    return proceed()
+  },
+  afterDestroy: function (values, proceed) {
+    sails.sockets.blast('product', { status: 'delete', product: values })
+    return proceed()
   },
 }

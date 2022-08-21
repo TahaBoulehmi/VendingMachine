@@ -12,7 +12,7 @@ export default function ProductForm(props) {
   const [cost, setCost] = useState(props.product.cost)
   const [amountAvailable, setAmountAvailable] = useState(props.product.amountAvailable)
 
-  const { isQuerySuccessful, data, runQuery } = useQuery()
+  const { isQuerySuccessful, runQuery } = useQuery()
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -24,7 +24,7 @@ export default function ProductForm(props) {
   }
   useEffect(() => {
     if (isQuerySuccessful) {
-      const timeoutID = setTimeout(() => props.setOpen(false), 1500)
+      const timeoutID = setTimeout(() => props.setOpen(false), 1000)
       return () => {
         // 👇️ clear timeout when component unmounts
         clearTimeout(timeoutID)
@@ -133,6 +133,7 @@ export default function ProductForm(props) {
                               type="number"
                               min="0"
                               autoComplete="amount-available"
+                              placeholder="0"
                               required
                               className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                             />

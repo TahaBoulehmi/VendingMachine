@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
     window.io.socket.on('userinfo', function (data) {
       setUser(data)
     })
+    return () => window.io.socket.off('userinfo')
   }, [user.id])
 
   const { Provider } = UserContext

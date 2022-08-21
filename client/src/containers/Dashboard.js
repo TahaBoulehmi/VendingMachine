@@ -134,7 +134,7 @@ export default function Dashboard() {
               </div>
               <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
                 <div className="py-4">
-                  <Products search={search} />
+                  <Products search={search} setProduct={setProduct} setOpenProductForm={setOpenProductForm} />
                 </div>
               </div>
             </div>

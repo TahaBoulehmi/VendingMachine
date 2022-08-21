@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { PencilAltIcon, TrashIcon, ShoppingCartIcon } from '@heroicons/react/solid'
 import { UserContext } from '../contexts/UserContext'
 import productImage from '../assets/product.png'
@@ -6,40 +6,32 @@ import { Show } from '../helpers/Conditionals'
 import useQuery from '../helpers/useQuery'
 import { deleteProducts, fetchProducts } from '../helpers/queries'
 
-// const products = [
-//   {
-//     id: 112,
-//     name: 'Tshirt Medium',
-//     amountAvailable: 24,
-//     cost: 95,
-//   },
-//   {
-//     id: 113,
-//     name: 'Tshirt Mediumn 2',
-//     amountAvailable: 2,
-//     cost: 10,
-//   },
-//   {
-//     id: 114,
-//     name: ' Medium',
-//     amountAvailable: 214,
-//     cost: 90,
-//   },
-// ]
-
 export default function Products(props) {
+  const [products, setProducts] = useState([])
   const { user } = useContext(UserContext)
-  const { isError, isRunningQuery, isQuerySuccessful, runQuery, data: products } = useQuery()
-
-  const { runQuery: deleteProductQuery } = useQuery()
+  const { isError, isRunningQuery, isQuerySuccessful, runQuery } = useQuery({
+    saveToState: setProducts,
+  })
 
   useEffect(() => {
     runQuery(() => fetchProducts())
   }, [])
 
+  useEffect(() => {
+    window.io.socket.on('product', function (data) {
+      if (data.status === 'create') {
+        setProducts([...products, data.product])
+      }
+      if (data.status === 'update')
+        setProducts(products.map(product => (product.id === data.product.id ? data.product : product)))
+      if (data.status === 'delete') setProducts(products.filter(product => product.id !== data.product.id))
+    })
+    return () => window.io.socket.off('product')
+  }, [products])
+
+  const { runQuery: deleteProductQuery } = useQuery()
   const deleteProduct = productId => {
     deleteProductQuery(() => deleteProducts(productId))
-    products.filter(product => product.id !== productId)
   }
   return (
     <>
@@ -109,6 +101,10 @@ export default function Products(props) {
                         <div className="w-0 flex-1 flex">
                           <a
                             href={() => false}
+                            onClick={() => {
+                              props.setProduct(product)
+                              props.setOpenProductForm(true)
+                            }}
                             className="relative -mr-px w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-gray-700 font-medium border border-transparent rounded-bl-lg hover:text-gray-500 cursor-pointer"
                           >
                             <PencilAltIcon className="w-5 h-5 text-gray-400" aria-hidden="true" />
@@ -118,10 +114,7 @@ export default function Products(props) {
                         <div className="-ml-px w-0 flex-1 flex">
                           <a
                             href={() => false}
-                            onClick={e => {
-                              e.preventDefault()
-                              deleteProduct(product.id)
-                            }}
+                            onClick={() => deleteProduct(product.id)}
                             className="relative w-0 flex-1 inline-flex items-center justify-center py-4 text-sm text-red-700 font-medium border border-transparent rounded-br-lg hover:text-red-500 cursor-pointer"
                           >
                             <TrashIcon className="w-5 h-5 text-red-400" aria-hidden="true" />

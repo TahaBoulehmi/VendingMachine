@@ -7,7 +7,7 @@
 
 module.exports = {
   fetchProducts: async function (req, res) {
-    const products = await Product.find()
+    const products = await Product.find(req.session.user.role === 1 ? { seller: req.session.user.id } : null)
       .select(['name', 'cost', 'amountAvailable'])
       .intercept(err => {
         return res.serverError(err)
@@ -30,19 +30,31 @@ module.exports = {
     return createdProduct ? res.ok(createdProduct) : null
   },
   updateProduct: async function (req, res) {
-    const createdUser = await User.create({
-      name: req.param('name'),
-      cost: req.param('cost'),
-      amountAvailable: req.param('amountAvailable'),
-      seller: req.session.user.id,
-    })
+    const updatedProduct = await Product.update({ id: req.param('productId'), seller: req.session.user.id })
+      .set({
+        name: req.param('name'),
+        cost: req.param('cost'),
+        amountAvailable: req.param('amountAvailable'),
+        seller: req.session.user.id,
+      })
       .intercept(err => {
-        return err.code === 'E_UNIQUE' ? res.smart('responses/409', 409, { email: false }) : res.serverError()
+        console.log(err)
+        return res.badRequest(err)
       })
       .fetch()
+    return updatedProduct ? res.ok(updatedProduct) : null
   },
 
   deleteProduct: async function (req, res) {
-    return res.ok({})
+    const deletedProduct = await Product.destroy({
+      id: req.param('productId'),
+      seller: req.session.user.id,
+    })
+      .intercept(err => {
+        console.log(err)
+        return res.badRequest(err)
+      })
+      .fetch()
+    return deletedProduct ? res.ok(deletedProduct) : null
   },
 }

@@ -42,6 +42,7 @@ const useQuery = function (queryOptions) {
             console.log(result)
             console.log(data)
             setData(queryOptions?.transformResult != null ? queryOptions.transformResult(data) : data)
+            if (queryOptions?.saveToState != null) queryOptions.saveToState(data)
             setIsRunningQuery(false)
             setIsQuerySuccessful(true)
           }
