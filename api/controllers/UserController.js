@@ -56,10 +56,24 @@ module.exports = {
     return res.ok({})
   },
 
-  authenticate: function (req, res) {
+  authenticate: async function (req, res) {
     if (req.session && req.session.user) {
-      return res.ok(req.session.user)
+      const user = await User.findOne(req.session.user.id).intercept(err => {
+        return res.serverError(err)
+      })
+      if (!user) {
+        return res.notFound('User not found.')
+      } else {
+        sails.sockets.join(req, req.session.user.id, err => {
+          if (err) {
+            return res.serverError(err)
+          }
+          req.session.user = user
+          return res.ok(user)
+        })
+      }
+    } else {
+      return res.notFound({})
     }
-    return res.notFound({})
   },
 }

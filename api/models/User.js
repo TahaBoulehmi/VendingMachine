@@ -92,4 +92,14 @@ module.exports = {
       return proceed()
     }
   },
+
+  afterCreate: function (values, proceed) {
+    sails.sockets.broadcast(values.id, 'userinfo', values)
+    return proceed()
+  },
+
+  afterUpdate: function (values, proceed) {
+    sails.sockets.broadcast(values.id, 'userinfo', values)
+    return proceed()
+  },
 }
