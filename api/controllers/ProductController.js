@@ -91,7 +91,8 @@ module.exports = {
                 return res.serverError(err)
               })
             if (updatedUser) {
-              return res.ok({ returnedCoins: 5 })
+              const returnedCoins = await sails.helpers.returnedCoins(user.deposit - price)
+              return res.ok({ returnedCoins })
             }
             return res.serverError({})
           }
