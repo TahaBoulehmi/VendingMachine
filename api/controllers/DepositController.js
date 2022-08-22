@@ -16,7 +16,7 @@ module.exports = {
         .intercept(err => {
           return res.serverError(err)
         })
-      if (!user) return res.notFound()
+      if (!user) return res.notFound({})
       const updatedUser = await User.updateOne({ id: req.session.user.id, role: 0 })
         .set({ deposit: user.deposit + req.param('deposit') })
         .intercept(err => {
@@ -25,7 +25,7 @@ module.exports = {
 
       return updatedUser ? res.ok({}) : res.notFound({})
     } else {
-      return res.badRequest()
+      return res.badRequest({ message: 'deposited coins were not valid' })
     }
   },
   reset: async function (req, res) {

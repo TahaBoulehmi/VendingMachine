@@ -15,7 +15,7 @@ module.exports = {
       role: req.param('role'),
     })
       .intercept(err => {
-        return res.serverError(err)
+        return res.badRequest(err)
       })
       .fetch()
     if (user) {
@@ -26,7 +26,7 @@ module.exports = {
 
   signin: async function (req, res) {
     const user = await User.findOne({ username: req.param('username') }).intercept(err => {
-      return res.serverError(err)
+      return res.notFound(err)
     })
     if (!user) {
       return res.notFound('User not found.')
@@ -40,7 +40,7 @@ module.exports = {
         },
 
         incorrect: function () {
-          return res.badRequest('The password was wrong')
+          return res.badRequest({ message: 'The password was wrong' })
         },
 
         success: function () {
@@ -62,7 +62,7 @@ module.exports = {
         return res.serverError(err)
       })
       if (!user) {
-        return res.notFound('User not found.')
+        return res.notFound({ message: 'User not found.' })
       } else {
         sails.sockets.join(req, req.session.user.id, err => {
           if (err) {

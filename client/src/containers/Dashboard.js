@@ -31,6 +31,9 @@ export default function Dashboard() {
   useEffect(() => {
     if (isQuerySuccessful) setUser({})
   }, [isQuerySuccessful, setUser])
+  useEffect(() => {
+    if (openProductForm === false) setProduct({})
+  }, [openProductForm])
 
   return (
     <>

@@ -23,7 +23,6 @@ module.exports = {
       seller: req.session.user.id,
     })
       .intercept(err => {
-        console.log(err)
         return res.badRequest(err)
       })
       .fetch()
@@ -41,7 +40,6 @@ module.exports = {
         seller: req.session.user.id,
       })
       .intercept(err => {
-        console.log(err)
         return res.badRequest(err)
       })
       .fetch()
@@ -54,7 +52,6 @@ module.exports = {
       seller: req.session.user.id,
     })
       .intercept(err => {
-        console.log(err)
         return res.badRequest(err)
       })
       .fetch()
@@ -66,12 +63,12 @@ module.exports = {
       return res.badRequest({ message: 'The amount is not a valid number' })
 
     const product = await Product.findOne({ id: req.param('productId') }).intercept(err => {
-      return res.serverError(err)
+      return res.notFound(err)
     })
     if (product) {
       if (product.amountAvailable >= req.param('amount')) {
         const user = await User.findOne({ id: req.session.user.id, role: 0 }).intercept(err => {
-          return res.serverError(err)
+          return res.notFound(err)
         })
         if (user) {
           const price = product.cost * req.param('amount')

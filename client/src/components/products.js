@@ -30,20 +30,25 @@ export default function Products(props) {
     return () => window.io.socket.off('product')
   }, [products])
 
-  const { runQuery: deleteProductQuery } = useQuery()
+  const {
+    ErrorAlert: DeleteErrorAlert,
+    SuccessAlert: DeleteSuccessAlert,
+    runQuery: deleteProductQuery,
+  } = useQuery()
   const deleteProduct = productId => {
     deleteProductQuery(() => deleteProducts(productId))
   }
 
-  const { isError: isBuyError, ErrorAlert, runQuery: buyProductQuery } = useQuery()
+  const { ErrorAlert: BuyErrorAlert, SuccessAlert: BuySuccessAlert, runQuery: buyProductQuery } = useQuery()
   const buyProduct = productId => {
     buyProductQuery(() => buyProducts(productId, quantityRefs.current[productId].value))
   }
   return (
     <>
-      <Show when={isBuyError}>
-        <ErrorAlert />
-      </Show>
+      <BuyErrorAlert />
+      <BuySuccessAlert />
+      <DeleteErrorAlert />
+      <DeleteSuccessAlert />
       <Show when={isRunningQuery}>Loading Data</Show>
       <Show when={isError}>Error Fetching Data</Show>
       <Show when={isQuerySuccessful && products.length === 0}>0 Products to display</Show>
