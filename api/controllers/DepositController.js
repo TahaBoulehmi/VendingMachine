@@ -16,7 +16,7 @@ module.exports = {
         .intercept(err => {
           return res.serverError(err)
         })
-      if (!user) return res.notFound({})
+      if (!user) return res.badRequest({})
       const updatedUser = await User.updateOne({ id: req.session.user.id, role: 0 })
         .set({ deposit: user.deposit + req.param('deposit') })
         .intercept(err => {

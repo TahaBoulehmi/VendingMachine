@@ -8,7 +8,7 @@ export default function Notification(props) {
   const [show, setShow] = useState(props.isOpen)
 
   useEffect(() => {
-    const timeoutID = setTimeout(() => setShow(false), 3000)
+    const timeoutID = setTimeout(() => setShow(false), 4000)
     return () => {
       // 👇️ clear timeout when component unmounts
       clearTimeout(timeoutID)

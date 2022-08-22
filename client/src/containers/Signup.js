@@ -17,7 +17,7 @@ export default function Signup() {
   const [role, setRole] = useState({ name: 'Buyer', id: 0 })
   const { setUser } = useContext(UserContext)
 
-  const { isQuerySuccessful, data, runQuery } = useQuery()
+  const { ErrorAlert, isQuerySuccessful, data, runQuery } = useQuery()
   const handleSubmit = e => {
     e.preventDefault()
     runQuery(() => signup(username, password, role.id))
@@ -29,6 +29,7 @@ export default function Signup() {
   }, [isQuerySuccessful])
   return (
     <>
+      <ErrorAlert />
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img className="mx-auto h-12 w-auto" src={Logo} alt="Vending Machine" />

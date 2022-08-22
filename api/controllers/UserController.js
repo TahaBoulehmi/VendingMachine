@@ -26,10 +26,10 @@ module.exports = {
 
   signin: async function (req, res) {
     const user = await User.findOne({ username: req.param('username') }).intercept(err => {
-      return res.notFound(err)
+      return res.serverError(err)
     })
     if (!user) {
-      return res.notFound('User not found.')
+      return res.notFound({ message: 'User not found.' })
     } else {
       Passwords.checkPassword({
         passwordAttempt: req.param('password'),
@@ -73,7 +73,7 @@ module.exports = {
         })
       }
     } else {
-      return res.notFound({})
+      return res.badRequest({})
     }
   },
 }

@@ -39,14 +39,45 @@ export default function Products(props) {
     deleteProductQuery(() => deleteProducts(productId))
   }
 
-  const { ErrorAlert: BuyErrorAlert, SuccessAlert: BuySuccessAlert, runQuery: buyProductQuery } = useQuery()
+  const {
+    ErrorAlert: BuyErrorAlert,
+    SuccessAlert: BuySuccessAlert,
+    runQuery: buyProductQuery,
+    data: returnedCoins,
+  } = useQuery({
+    transformResult: data => ({
+      ...returnedCoins,
+      message: (
+        <>
+          <p>Returned coins:</p>
+          {Object.keys(data.returnedCoins).map(
+            coin =>
+              data.returnedCoins[coin] > 0 && (
+                <>
+                  <span>{data.returnedCoins[coin]}:</span>
+                  <button
+                    key={coin}
+                    type="button"
+                    className="inline-flex items-center p-2 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 m-2"
+                  >
+                    <span className="h-6 w-6" aria-hidden="true">
+                      {coin}
+                    </span>
+                  </button>
+                </>
+              )
+          )}
+        </>
+      ),
+    }),
+  })
   const buyProduct = productId => {
     buyProductQuery(() => buyProducts(productId, quantityRefs.current[productId].value))
   }
   return (
     <>
       <BuyErrorAlert />
-      <BuySuccessAlert />
+      <BuySuccessAlert message={returnedCoins ? returnedCoins.message : ''} />
       <DeleteErrorAlert />
       <DeleteSuccessAlert />
       <Show when={isRunningQuery}>Loading Data</Show>
