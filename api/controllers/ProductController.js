@@ -63,7 +63,7 @@ module.exports = {
 
   buyProduct: async function (req, res) {
     if (!(req.param('amount') > 0 && Math.floor(req.param('amount')) === +req.param('amount')))
-      return req.badRequest({ message: 'The amount is not a valid number' })
+      return res.badRequest({ message: 'The amount is not a valid number' })
 
     const product = await Product.findOne({ id: req.param('productId') }).intercept(err => {
       return res.serverError(err)
@@ -75,7 +75,7 @@ module.exports = {
         })
         if (user) {
           const price = product.cost * req.param('amount')
-          if (price > user.deposit) return req.badRequest({ message: 'Not enough money' })
+          if (price > user.deposit) return res.badRequest({ message: 'Not enough money' })
           const updatedProduct = await Product.updateOne(req.param('productId'))
             .set({
               amountAvailable: product.amountAvailable - req.param('amount'),
@@ -98,7 +98,7 @@ module.exports = {
           }
         }
       } else {
-        return req.badRequest({ message: 'The products in stock are not enough' })
+        return res.badRequest({ message: 'The products in stock are not enough' })
       }
     }
   },
