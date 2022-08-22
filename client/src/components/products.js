@@ -35,12 +35,15 @@ export default function Products(props) {
     deleteProductQuery(() => deleteProducts(productId))
   }
 
-  const { runQuery: buyProductQuery } = useQuery()
+  const { isError: isBuyError, ErrorAlert, runQuery: buyProductQuery } = useQuery()
   const buyProduct = productId => {
     buyProductQuery(() => buyProducts(productId, quantityRefs.current[productId].value))
   }
   return (
     <>
+      <Show when={isBuyError}>
+        <ErrorAlert />
+      </Show>
       <Show when={isRunningQuery}>Loading Data</Show>
       <Show when={isError}>Error Fetching Data</Show>
       <Show when={isQuerySuccessful && products.length === 0}>0 Products to display</Show>

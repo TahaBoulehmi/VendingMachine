@@ -7,7 +7,7 @@
 
 module.exports = {
   fetchProducts: async function (req, res) {
-    const products = await Product.find(req.session.user.role === 1 ? { seller: req.session.user.id } : null)
+    const products = await Product.find(req.session.user.role === 1 ? { seller: req.session.user.id } : {})
       .select(['name', 'cost', 'amountAvailable'])
       .intercept(err => {
         return res.serverError(err)

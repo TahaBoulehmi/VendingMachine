@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState, useRef } from 'react'
+import { useCallback, useEffect, useState, useRef, createElement, useMemo } from 'react'
+import Notification from '../components/Notification'
 
 /**
  * This hook is used to simplify state involving network requests.
@@ -19,6 +20,43 @@ const useQuery = function (queryOptions) {
       mounted.current = false
     } // ... and to false on unmount
   }, [])
+  console.log(errors)
+  const errorAlertProps = useMemo(
+    () => ({
+      isOpen: errors ? true : false,
+      onCancel: () => setErrors(undefined),
+      message: String(errors),
+      type: 'Error',
+    }),
+    [errors]
+  )
+  const ErrorAlert = useMemo(
+    () =>
+      function ErrorAlertFactory(props) {
+        return createElement(Notification, { ...errorAlertProps, ...props })
+      },
+    [errorAlertProps]
+  )
+
+  const successAlertProps = useMemo(
+    () => ({
+      isOpen: isQuerySuccessful,
+      onCancel: () => setIsQuerySuccessful(false),
+      type: 'Success',
+    }),
+    [isQuerySuccessful]
+  )
+
+  const SuccessAlert = useMemo(
+    () =>
+      function SuccessAlertFactory(props) {
+        return createElement(Notification, {
+          ...successAlertProps,
+          ...props,
+        })
+      },
+    [successAlertProps]
+  )
 
   const runQuery = useCallback(
     fetcher => {
@@ -29,12 +67,13 @@ const useQuery = function (queryOptions) {
       setErrors()
 
       return fetcher()
-        .then(response => {
+        .then(async response => {
           setResult(response)
 
           if (response.status === 200) return response.json()
           else {
-            throw new Error(response)
+            const errorToThrow = await response.json()
+            throw new Error(errorToThrow.message)
           }
         })
         .then(data => {
@@ -66,8 +105,11 @@ const useQuery = function (queryOptions) {
     errors,
     isQuerySuccessful,
     setIsQuerySuccessful,
+    SuccessAlert,
     isRunningQuery,
     isError: errors != null,
+    errorAlertProps,
+    ErrorAlert,
     clearErrors: () => setErrors(undefined),
   }
 }
