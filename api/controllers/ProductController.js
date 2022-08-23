@@ -45,7 +45,6 @@ module.exports = {
       .fetch()
     return updatedProduct ? res.ok(updatedProduct) : null
   },
-
   deleteProduct: async function (req, res) {
     const deletedProduct = await Product.destroy({
       id: req.param('productId'),
@@ -57,7 +56,6 @@ module.exports = {
       .fetch()
     return deletedProduct ? res.ok(deletedProduct) : null
   },
-
   buyProduct: async function (req, res) {
     if (!(req.param('amount') > 0 && Math.floor(req.param('amount')) === +req.param('amount')))
       return res.badRequest({ message: 'The amount is not a valid number' })
