@@ -76,4 +76,71 @@ module.exports = {
       return res.badRequest({})
     }
   },
+
+  logoutAll: async function (req, res) {
+    if (req.session && req.session.user) {
+      const user = await User.findOne(req.session.user.id).intercept(err => {
+        return res.serverError(err)
+      })
+      if (!user) {
+        return res.notFound({ message: 'User not found.' })
+      } else {
+        sails.sockets.broadcast(String(req.session.user.id), 'logout')
+        sails.sockets.removeRoomMembersFromRooms(
+          String(req.session.user.id),
+          String(req.session.user.id),
+          err => {
+            console.log('logout all', err)
+            if (err) {
+              return res.serverError(err)
+            }
+            return res.ok({})
+          }
+        )
+      }
+    } else {
+      return res.badRequest({})
+    }
+  },
+
+  fetchUser: async function (req, res) {
+    if (req.session && req.session.user) {
+      const user = await User.findOne(req.session.user.id).intercept(err => {
+        return res.serverError(err)
+      })
+      if (!user) {
+        return res.notFound({ message: 'User not found.' })
+      } else {
+        return res.ok({ user })
+      }
+    } else {
+      return res.badRequest({})
+    }
+  },
+
+  updateUser: async function (req, res) {
+    const updatedUser = await User.updateOne({ id: req.session.user.id })
+      .set({ username: req.param('username'), password: req.param('password') })
+      .intercept(err => {
+        return res.serverError(err)
+      })
+
+    return updatedUser ? res.ok({ user }) : res.notFound({})
+  },
+
+  deleteUser: async function (req, res) {
+    await Product.destroy({
+      seller: req.session.user.id,
+    }).intercept(err => {
+      return res.badRequest(err)
+    })
+
+    await User.destroy({
+      id: req.session.user.id,
+    }).intercept(err => {
+      return res.badRequest(err)
+    })
+    req.session.user = null
+    return res.ok({})
+  },
 }

@@ -102,4 +102,9 @@ module.exports = {
     sails.sockets.broadcast(values.id, 'userinfo', values)
     return proceed()
   },
+
+  afterDestroy: function (values, proceed) {
+    sails.sockets.broadcast(values.id, 'userinfo', values)
+    return proceed()
+  },
 }

@@ -26,6 +26,9 @@ module.exports.policies = {
     signout: ['isLoggedIn'],
     authenticate: ['isLoggedIn'],
     logoutAll: ['isLoggedIn'],
+    fetchUser: ['isLoggedIn'],
+    updateUser: ['isLoggedIn'],
+    deleteUser: ['isLoggedIn'],
   },
   ProductController: {
     fetchProducts: ['isLoggedIn'],
