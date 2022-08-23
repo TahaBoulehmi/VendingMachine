@@ -47,7 +47,7 @@ export default function Notification(props) {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className="text-sm font-medium text-gray-900">{props.type}</p>
-                    <p className="mt-1 text-sm text-gray-500">{props.message}</p>
+                    <div className="mt-1 text-sm text-gray-500">{props.message}</div>
                   </div>
                   <div className="ml-4 flex-shrink-0 flex">
                     <button

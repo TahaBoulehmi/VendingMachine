@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState, useRef } from 'react'
+import { useContext, useEffect, useState, useRef, Fragment } from 'react'
 import { PencilAltIcon, TrashIcon, ShoppingCartIcon } from '@heroicons/react/solid'
 import { UserContext } from '../contexts/UserContext'
 import productImage from '../assets/product.png'
@@ -43,17 +43,17 @@ export default function Products(props) {
     ErrorAlert: BuyErrorAlert,
     SuccessAlert: BuySuccessAlert,
     runQuery: buyProductQuery,
-    data: returnedCoins,
+    data: boughtProduct,
   } = useQuery({
     transformResult: data => ({
-      ...returnedCoins,
+      ...boughtProduct,
       message: (
         <>
           <p>Returned coins:</p>
           {Object.keys(data.returnedCoins).map(
             coin =>
               data.returnedCoins[coin] > 0 && (
-                <>
+                <Fragment key={coin}>
                   <span>{data.returnedCoins[coin]}:</span>
                   <button
                     key={coin}
@@ -64,7 +64,7 @@ export default function Products(props) {
                       {coin}
                     </span>
                   </button>
-                </>
+                </Fragment>
               )
           )}
         </>
@@ -77,7 +77,7 @@ export default function Products(props) {
   return (
     <>
       <BuyErrorAlert />
-      <BuySuccessAlert message={returnedCoins ? returnedCoins.message : ''} />
+      <BuySuccessAlert message={boughtProduct ? boughtProduct.message : ''} />
       <DeleteErrorAlert />
       <DeleteSuccessAlert />
       <Show when={isRunningQuery}>Loading Data</Show>
