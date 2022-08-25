@@ -7,10 +7,9 @@
 
 module.exports = {
   deposit: async function (req, res) {
-    console.log(req.session.user)
-    const validateDeposit = sails.helpers.validateDeposit(req.param('deposit'))
+    try {
+      sails.helpers.validateDeposit(req.param('deposit'))
 
-    if (validateDeposit) {
       const user = await User.findOne({ id: req.session.user.id, role: 0 })
         .select(['deposit'])
         .intercept(err => {
@@ -24,7 +23,7 @@ module.exports = {
         })
 
       return updatedUser ? res.ok({}) : res.notFound({})
-    } else {
+    } catch (err) {
       return res.badRequest({ message: 'deposited coins were not valid' })
     }
   },

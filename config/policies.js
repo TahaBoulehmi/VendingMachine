@@ -33,7 +33,7 @@ module.exports.policies = {
   ProductController: {
     fetchProducts: ['isLoggedIn'],
     createProduct: ['isLoggedIn', 'isSeller'],
-    editProduct: ['isLoggedIn', 'isSeller'],
+    updateProduct: ['isLoggedIn', 'isSeller'],
     deleteProduct: ['isLoggedIn', 'isSeller'],
     buyProduct: ['isLoggedIn', 'isBuyer'],
   },
