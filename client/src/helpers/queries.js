@@ -15,6 +15,7 @@ export const endpoints = {
   deposit: { api: HOST + '/deposit', method: 'POST', headers: HEADERS },
   reset: { api: HOST + '/reset', method: 'POST', headers: HEADERS },
   authenticate: { api: '/authenticate' },
+  logoutAll: { api: '/logout/all' },
 }
 
 // AUTHENTICATION

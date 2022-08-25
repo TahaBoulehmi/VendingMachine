@@ -6,7 +6,7 @@ import { UserContext } from '../contexts/UserContext'
 const IsLoggedOutGuard = props => {
   const { user } = useContext(UserContext)
 
-  if (!user?.id) {
+  if (!user || !user.id) {
     return props.children
   }
 

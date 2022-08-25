@@ -15,10 +15,7 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
-  const userNavigation = [
-    { name: 'Your Profile', href: () => false, onClick: () => {} },
-    { name: 'Sign out', href: () => false, onClick: () => runQuery(() => signout()) },
-  ]
+  const userNavigation = [{ name: 'Sign out', href: () => false, onClick: () => runQuery(() => signout()) }]
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [search, setSearch] = useState('')

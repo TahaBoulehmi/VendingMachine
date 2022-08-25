@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom'
-import { useEffect, useState, useContext } from 'react'
+import { useState, useContext } from 'react'
+import LogoutUsers from '../components/LogoutUsers'
 import useQuery from '../helpers/useQuery'
 import { signin } from '../helpers/queries'
 import { UserContext } from '../contexts/UserContext'
 import Logo from '../assets/logo.svg'
+import { endpoints } from '../helpers/queries'
 
 export default function Signin() {
   const [username, setUsername] = useState('')
@@ -16,13 +18,19 @@ export default function Signin() {
     e.preventDefault()
     runQuery(() => signin(username, password))
   }
-  useEffect(() => {
-    if (isQuerySuccessful) {
+
+  const logoutUsers = e => {
+    window.io.socket.post(endpoints.logoutAll.api, function gotResponse() {
       setUser(data.user)
-    }
-  }, [isQuerySuccessful])
+    })
+  }
   return (
     <>
+      <LogoutUsers
+        open={isQuerySuccessful}
+        logoutUsers={logoutUsers}
+        cancelLogoutUsers={() => setUser(data.user)}
+      />
       <ErrorAlert />
       <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
