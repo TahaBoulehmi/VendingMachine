@@ -1,8 +1,8 @@
 {
   "name": "vending-machine",
-  "private": true,
-  "version": "0.0.0",
-  "description": "a Sails application",
+  "private": false,
+  "version": "0.1.0",
+  "description": "Vending Machine",
   "keywords": [],
   "dependencies": {
     "@sailshq/connect-redis": "^3.2.1",
