@@ -17,7 +17,7 @@ module.exports = {
         })
       if (!user) return res.badRequest({})
       const updatedUser = await User.updateOne({ id: req.session.user.id, role: 0 })
-        .set({ deposit: user.deposit + req.param('deposit') })
+        .set({ deposit: user.deposit + parseInt(req.param('deposit')) })
         .intercept(err => {
           return res.serverError(err)
         })
